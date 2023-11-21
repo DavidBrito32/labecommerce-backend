@@ -1,0 +1,14 @@
+{
+  "name": "labecommerce-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": "https://github.com/labenuexercicios/node-package-json-exercicios.git",
+  "author": "DavidBrito32 <davidbrito.carneiro458@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
