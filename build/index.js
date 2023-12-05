@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("./database");
-console.table(database_1.users);
+// console.log(createProducts("prod003", "Microfone Fifine", 240, "Um microfone muito bom", "https://www.fifinemicrofones.com.br/cdn/shop/products/Sdf7e1614dc8b4cbea2898cf1d3554059I.jpg?v=1682810299"));
 console.log("\n");
-console.table(database_1.products);
+// console.log(getAllUsers());
+console.log((0, database_1.searchProducts)("gamer"));
