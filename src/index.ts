@@ -22,6 +22,7 @@ app.get("/ping", (req: Request, res: Response) => {
   res.send("Pong!");
 });
 
+//USERS ENDPOINTS
 app.get("/users", (req: Request, res: Response) => {
   res.status(200).send(users);
 });
@@ -34,6 +35,8 @@ app.post("/users", (req: Request, res: Response) => {
   res.status(201).send(createUser(id, name, email, password));
 });
 
+//************************************************************** */
+//PRODUCTS ENDPOINTS
 app.get("/products", (req: Request, res: Response) => {
   const name = req.query.name as string;
   if (name) {
@@ -49,3 +52,5 @@ app.post("/products", (req: Request, res: Response) => {
   const imageUrl = req.body.imageUrl as string;
   res.status(201).send(createProducts(id, name, price, description, imageUrl));
 });
+
+//************************************************************** */
