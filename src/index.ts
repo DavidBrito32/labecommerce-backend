@@ -27,23 +27,28 @@ app.get("/users", (req: Request, res: Response) => {
     if (res.statusCode === 200) {
       res.statusCode = 500;
     }
-    res.send(err instanceof Error);
+    res.send("Erro inesperado");
   }
 }); // ✅
 
 app.post("/users", (req: Request, res: Response) => {
   try {
-    const id = req.body.id;
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
+    const { id, name, email, password } = req.body;
 
-    if(id === undefined || name === undefined || email === undefined || password === undefined){
-        res.statusCode = 400;
-        throw new Error("O body deve corresponder com todos esses atributos: 'id' - 'name' - 'email' - 'password'");
-    }    
+    if (
+      id === undefined ||
+      name === undefined ||
+      email === undefined ||
+      password === undefined
+    ) {
+      res.statusCode = 400;
+      throw new Error(
+        "O body deve corresponder com todos esses atributos: 'id' - 'name' - 'email' - 'password'"
+      );
+    }
+
     //verificando o ID
-    if(id !== undefined){
+    if (id !== undefined) {
       if (typeof id !== "string") {
         res.statusCode = 400;
         throw new Error("'id' - Deve ser um string");
@@ -59,8 +64,6 @@ app.post("/users", (req: Request, res: Response) => {
       }
     }
 
-
-
     if (typeof name !== "string") {
       res.status(400);
       throw new Error("'name' - deve ser uma string");
@@ -70,7 +73,6 @@ app.post("/users", (req: Request, res: Response) => {
       res.status(400);
       throw new Error("'name' - deve conter mais de 2 caracteres");
     }
-
 
     if (typeof email !== "string") {
       res.status(400);
@@ -83,18 +85,18 @@ app.post("/users", (req: Request, res: Response) => {
 
     if (verifyEmail !== undefined) {
       res.status(400);
-      throw new Error(
-        "'email' - email ja foi cadastrado - utilize outro"
-      );
+      throw new Error("'email' - email ja foi cadastrado - utilize outro");
     }
 
-    if(typeof password !== "string"){
+    if (typeof password !== "string") {
       res.statusCode = 400;
       throw new Error("'password' - Deve ser do Tipo string");
     }
 
-
-    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,12}$/g)
+    if (
+      !password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,12}$/g
+      )
     ) {
       res.statusCode = 400;
       throw new Error(
@@ -102,21 +104,19 @@ app.post("/users", (req: Request, res: Response) => {
       );
     }
 
-   
     createUser(id, name, email, password);
     res.status(201).send("Usuario Cadastrado com sucesso!");
-
   } catch (err) {
     if (res.statusCode === 200) {
       res.statusCode = 500;
     }
     if (err instanceof Error) {
-      res.send(err.message)
-    }else{
-      res.send("Erro inesperado")
+      res.send(err.message);
+    } else {
+      res.send("Erro inesperado");
     }
   }
-}); // ✅
+});
 
 app.delete("/users/:id", (req: Request, res: Response) => {
   try {
@@ -139,8 +139,8 @@ app.delete("/users/:id", (req: Request, res: Response) => {
 
     if (err instanceof Error) {
       res.send(err.message);
-    }else{
-      res.send("Erro inesperado")
+    } else {
+      res.send("Erro inesperado");
     }
   }
 }); // ✅
@@ -148,31 +148,75 @@ app.delete("/users/:id", (req: Request, res: Response) => {
 app.put("/users/:id", (req: Request, res: Response) => {
   try {
     const idToEdit = req.params.id; // id do usuario
-
-    if (!idToEdit) {
+    if (idToEdit === undefined) {
       res.statusCode = 400;
       throw new Error("'id' - paramiters - é obrigatorio para esta operação");
     }
+    const buscarUser = users.find((prod) => prod.id === idToEdit);
 
-    const newId = req.body.id as string | undefined;
-    const newName = req.body.name as string | undefined;
-    const newEmail = req.body.email as string | undefined;
-    const newPassword = req.body.password as string | undefined;
+    if (buscarUser === undefined) {
+      res.statusCode = 404;
+      throw new Error("Usuario não encontrado");
+    }
+    const { id, name, email, password } = req.body;
+
+    if (id !== undefined) {
+      if (typeof id !== "string") {
+        res.statusCode = 400;
+        throw new Error("'id' - Deve ser em formato string");
+      }
+    }
+    if (name !== undefined) {
+      if (typeof name !== "string") {
+        res.statusCode = 400;
+        throw new Error("'name' - Deve ser em formato string");
+      }
+
+      if (name.length < 2) {
+        res.statusCode = 400;
+        throw new Error("'name' - deve conter mais de 2 caracteres");
+      }
+    }
+    if (email !== undefined) {
+      if (typeof email !== "string") {
+        res.statusCode = 400;
+        throw new Error("'email' - Deve ser em formato string");
+      }
+
+      if (!email.includes("@")) {
+        res.statusCode = 400;
+        throw new Error("'email' - Deve incluir o @ ex: fulano@email.com");
+      }
+    }
+    if (password !== undefined) {
+      if (typeof password !== "string") {
+        res.statusCode = 400;
+        throw new Error("'password' - Deve ser em formato string");
+      }
+      if (
+        !password.match(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,12}$/g
+        )
+      ) {
+        res.statusCode = 400;
+        throw new Error(
+          "'password' deve possuir entre 8 e 12 caracteres, com letras maiúsculas e minúsculas e no mínimo um número e um caractere especial"
+        );
+      }
+    }
 
     const newUser: TUser | undefined = users.find(
       (usuario) => usuario.id === idToEdit
     );
 
     if (newUser) {
-      newUser.id = newId || newUser.id;
-      newUser.name = newName || newUser.name;
-      newUser.email = newEmail || newUser.email;
-      newUser.password = newPassword || newUser.password;
-
-      return res.status(201).send("Informações atualizadas com sucesso!");
+      newUser.id = id || newUser.id;
+      newUser.name = name || newUser.name;
+      newUser.email = email || newUser.email;
+      newUser.password = password || newUser.password;
     }
 
-    res.status(404).send("Usuario não localizado");
+    res.status(201).send("Informações atualizadas com sucesso!");
   } catch (err) {
     if (res.statusCode === 200) {
       res.statusCode = 500;
@@ -182,7 +226,7 @@ app.put("/users/:id", (req: Request, res: Response) => {
       res.send(err.message);
     }
   }
-});
+}); // ✅
 
 //************************************************************** */
 //PRODUCTS ENDPOINTS
@@ -192,15 +236,16 @@ app.get("/products", (req: Request, res: Response) => {
     const name = req.query.name as string;
 
     if (name !== undefined) {
-      if(name.length < 1){
+      if (name.length < 1) {
         res.statusCode = 400;
-        throw new Error("'name' - query params deve possuir pelo menos um caractere");
+        throw new Error(
+          "'name' - query params deve possuir pelo menos um caractere"
+        );
       }
       res.status(200).send(searchProducts(name));
     }
 
     res.status(200).send(products);
-
   } catch (err) {
     if (req.statusCode === 200) {
       req.statusCode = 500;
@@ -208,8 +253,8 @@ app.get("/products", (req: Request, res: Response) => {
 
     if (err instanceof Error) {
       res.send(err.message);
-    }else{
-      res.send("Erro inesperado")
+    } else {
+      res.send("Erro inesperado");
     }
   }
 });
@@ -219,17 +264,25 @@ app.post("/products", (req: Request, res: Response) => {
   try {
     const { id, name, price, description, imageUrl } = req.body;
 
-    if(id === undefined || name === undefined || price === undefined || description === undefined || imageUrl === undefined){
+    if (
+      id === undefined ||
+      name === undefined ||
+      price === undefined ||
+      description === undefined ||
+      imageUrl === undefined
+    ) {
       res.statusCode = 400;
-      throw new Error("O body deve corresponder com todos esses atributos: 'id' - 'name' - 'price' - 'description' - 'imageUrl'");
+      throw new Error(
+        "O body deve corresponder com todos esses atributos: 'id' - 'name' - 'price' - 'description' - 'imageUrl'"
+      );
     }
 
-    if(id !== undefined){
+    if (id !== undefined) {
       if (typeof id !== "string") {
         res.statusCode = 400;
         throw new Error("'id' - Precisa ser uma string");
       }
-  
+
       if (!id.includes("prod")) {
         res.statusCode = 400;
         throw new Error("'id' - Precisa corresponder ao padrão: 'prod000'");
@@ -238,13 +291,12 @@ app.post("/products", (req: Request, res: Response) => {
       const duplicatedProduct: TProduct | undefined = products.find(
         (prod) => prod.id === id
       );
-  
+
       if (duplicatedProduct !== undefined) {
         res.statusCode = 400;
         throw new Error("'id' - ja existe um produto cadastrado com esse id");
       }
-
-    }   
+    }
 
     if (typeof name !== "string") {
       res.statusCode = 400;
@@ -256,17 +308,17 @@ app.post("/products", (req: Request, res: Response) => {
       throw new Error("'name' - Precisa ter mais de 2 caracteres");
     }
 
-    if(typeof price !== "number"){
+    if (typeof price !== "number") {
       res.statusCode = 400;
       throw new Error("'price' - Deve ser enviado como um number");
     }
 
-    if(typeof description !== "string"){
+    if (typeof description !== "string") {
       res.statusCode = 400;
       throw new Error("'description' - Deve ser uma string");
     }
 
-    if(typeof imageUrl !== "string"){
+    if (typeof imageUrl !== "string") {
       res.statusCode = 400;
       throw new Error("'imageUrl' - Deve ser uma string");
     }
@@ -277,10 +329,9 @@ app.post("/products", (req: Request, res: Response) => {
     if (req.statusCode === 200) {
       req.statusCode = 500;
     }
-
     if (err instanceof Error) {
       res.send(err.message);
-    }else{
+    } else {
       res.send("Erro inesperado");
     }
   }
@@ -301,18 +352,16 @@ app.delete("/products/:id", (req: Request, res: Response) => {
 
     if (index >= 0) {
       products.splice(index, 1);
-      return res.status(200).send("Produto deletado com sucesso");
     }
+    res.status(200).send("Produto deletado com sucesso");
   } catch (err) {
     if (res.statusCode === 200) {
       res.statusCode = 500;
     }
-
     if (err instanceof Error) {
       res.send(err.message);
-    }
-    else{
-      res.send("Erro inesperado")
+    } else {
+      res.send("Erro inesperado");
     }
   }
 });
@@ -321,44 +370,44 @@ app.put("/products/:id", (req: Request, res: Response) => {
   //EDIÇÃO DE PRODUTOS
   try {
     const idToEdit = req.params.id; // id do produto
-    const buscar = products.find(prod => prod.id === idToEdit);
+    const buscar = products.find((prod) => prod.id === idToEdit);
 
-    if(buscar === undefined){
+    if (buscar === undefined) {
       res.statusCode = 404;
       throw new Error("Produto não encontrado");
     }
     const { id, name, price, description, imageUrl } = req.body;
 
-    if(id !== undefined){
-      if(typeof id !== "string"){
+    if (id !== undefined) {
+      if (typeof id !== "string") {
         res.statusCode = 400;
         throw new Error("'id' - Deve ser em formato string");
       }
     }
-    if(name !== undefined){
-      if(typeof name !== "string"){
+    if (name !== undefined) {
+      if (typeof name !== "string") {
         res.statusCode = 400;
         throw new Error("'name' - Deve ser em formato string");
       }
     }
-    if(price !== undefined){
-      if(typeof price !== "number"){
+    if (price !== undefined) {
+      if (typeof price !== "number") {
         res.statusCode = 400;
         throw new Error("'price' - Deve ser em formato number");
       }
     }
-    if(description !== undefined){
-      if(typeof description !== "string"){
+    if (description !== undefined) {
+      if (typeof description !== "string") {
         res.statusCode = 400;
         throw new Error("'description' - Deve ser em formato string");
       }
     }
-    if(imageUrl !== undefined){
-      if(typeof imageUrl !== "string"){
+    if (imageUrl !== undefined) {
+      if (typeof imageUrl !== "string") {
         res.statusCode = 400;
         throw new Error("'imageUrl' - Deve ser em formato string");
       }
-    }    
+    }
 
     const novoProduto: TProduct | undefined = products.find(
       (usuario) => usuario.id === idToEdit
@@ -369,17 +418,15 @@ app.put("/products/:id", (req: Request, res: Response) => {
       novoProduto.description = description || novoProduto.description;
       novoProduto.price = price || novoProduto.price;
       novoProduto.imageUrl = imageUrl || novoProduto.imageUrl;
-      return res.status(200).send("Informações atualizadas com sucesso!");
     }
-
+    res.status(200).send("Informações atualizadas com sucesso!");
   } catch (err) {
     if (res.statusCode === 200) {
       res.statusCode = 500;
     }
-
     if (err instanceof Error) {
       res.send(err.message);
-    }else{
+    } else {
       res.send("Erro inesperado");
     }
   }
