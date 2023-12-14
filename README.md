@@ -1,3 +1,5 @@
+![Alt text](./public/image.png)
+
 # Labecommerce - Backend
 
 Este é o backend para o LabEcommerce, uma aplicação de comércio eletrônico.
@@ -16,26 +18,38 @@ O LabEcommerce (**_Back End_**) é uma plataforma de comércio eletrônico onde 
 
 #### Listar Todos os Usuários
 
-- **Endpoint:** `/users`
-- **Método:** GET
+- **Endpoint:** 
+- **Método:** **_GET_**
+```
+/users
+```
 - **Descrição:** Retorna a lista de todos os usuários cadastrados.
 
 #### Criar Novo Usuário
 
-- **Endpoint:** `/users`
-- **Método:** POST
+- **Endpoint:** 
+- **Método:** **_POST_**
+```
+/users
+```
 - **Descrição:** Cria um novo usuário com base nos dados fornecidos.
 
 #### Atualizar Usuário
 
-- **Endpoint:** `/users/:id`
-- **Método:** PUT
+- **Endpoint:**
+- **Método:** **_PUT_**
+```
+/users
+```
 - **Descrição:** Atualiza as informações do usuário correspondente ao ID fornecido.
 
 #### Remover Usuário
 
-- **Endpoint:** `/users/:id`
-- **Método:** DELETE
+- **Endpoint:**
+- **Método:** **_DELETE_**
+```
+/users/:id
+```
 - **Descrição:** Remove o usuário correspondente ao ID fornecido.
 
 
@@ -43,45 +57,85 @@ O LabEcommerce (**_Back End_**) é uma plataforma de comércio eletrônico onde 
 
 #### Listar Todos os Produtos
 
-- **Endpoint:** `/products`
-- **Método:** GET
+- **Endpoint:** 
+- **Método:** **_GET_**
+```
+/products
+```
 - **Descrição:** Retorna a lista de todos os produtos cadastrados.
 
 #### Criar Novo Produto
 
-- **Endpoint:** `/products`
-- **Método:** POST
+- **Endpoint:** 
+- **Método:** **_POST_**
+```
+/products
+```
 - **Descrição:** Cria um novo produto com base nos dados fornecidos.
 
 #### Atualizar Produto
 
-- **Endpoint:** `/products/:id`
-- **Método:** PUT
+- **Endpoint:** 
+- **Método:** **_PUT_**
+```
+/products/:id
+```
 - **Descrição:** Atualiza as informações do produto correspondente ao ID fornecido.
 
 #### Remover Produto
 
-- **Endpoint:** `/products/:id`
-- **Método:** DELETE
+- **Endpoint:** 
+- **Método:** **_DELETE_**
+```
+/products/:id
+```
 - **Descrição:** Remove o produto correspondente ao ID fornecido.
 
 ## Configuração
 
 Para executar este projeto localmente, siga as etapas:
 
+#### Este projeto utiliza o Node.js ter ele instalado na sua maquina se faz necessario
+ - [Node.js](https://nodejs.org) ◀️ Instale clicando neste link
+
 1. Clone este repositório.
-2. Instale as dependências usando `npm install`.
+```
+https://github.com/DavidBrito32/labecommerce-backend.git
+```
+2. Instale as dependências usando :
+```
+npm install
+```
+Ou 
+
+```
+yarn install
+```
+
 3. Configure as variáveis de ambiente, se necessário.
-4. Execute o servidor usando `npm start`.
-5. Após isso entre no **_Postman_** ou **_Insomnia_** acessando a BASE_URL: http://localhost:3003
+4. Execute o servidor usando:
+```
+npm run start
+```
+Ou 
+
+```
+yarn start
+```
+5. Após isso entre no **_Postman_** ou **_Insomnia_** acessando a BASE_URL: 
+```
+http://localhost:3003/
+```
 
 Certifique-se de ter um ambiente Node.js configurado para que voce consiga rodar corretamente o projeto em sua maquina.
 
 ## Tecnologias Utilizadas
 
-- Node.js
-- Typescript
-- Express.js
+
+- [Node.JS](https://nodejs.org)
+- [SQLite](https://www.sqlite.org/index.html)
+- [Typescript](https://typescriptlang.org)
+- [Express.js](https://expressjs.com/pt-br/)
 
 ## Contribuição
 
@@ -89,5 +143,5 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou env
 
 ## Autor
 
-[David_Brito] / davidbrito.carneiro458@gmail.com
+* [David Brito](davidbrito.carneiro458@gmail.com)
 
