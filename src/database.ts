@@ -1,7 +1,6 @@
 import { TUser, TProduct } from "./types";
 
 //functions
-
 export const createUser = (
   id: string,
   name: string,

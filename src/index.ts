@@ -1,12 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import {
-  createProducts,
-  createUser,
-  products,
-  searchProducts,
-  users,
-} from "./database";
+import { createProducts, createUser, products, searchProducts, users, } from "./database";
 import { TProduct, TUser } from "./types";
 
 const app = express();
@@ -14,10 +8,6 @@ app.use(express.json());
 app.use(cors());
 
 const port = 3003;
-
-app.listen(port, () => {
-  console.log("Servidor rodando na porta 3003");
-});
 
 //USERS ENDPOINTS
 app.get("/users", (req: Request, res: Response) => {
@@ -433,3 +423,7 @@ app.put("/products/:id", (req: Request, res: Response) => {
 });
 
 //************************************************************** */
+
+app.listen(port, () => {
+  console.log("Servidor rodando na porta 3003");
+});
