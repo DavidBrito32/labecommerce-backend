@@ -142,14 +142,18 @@ CREATE TABLE
         id TEXT NOT NULL UNIQUE PRIMARY KEY,
         buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
-        created_at DATE NOT NULL DEFAULT TIMESTAMP,
+        created_at TEXT NOT NULL,
         FOREIGN KEY (buyer) REFERENCES users (id)
     );
 
+DROP TABLE purchases;
+
 INSERT INTO
-    purchases (id, buyer, total_price)
+    purchases (id, buyer, total_price, created_at)
 VALUES
-    ('p005', 'u004', 658);
+    ('p001', 'u004', 800.33, CURRENT_TIMESTAMP),
+    ('p002', 'u005', 200.33, CURRENT_TIMESTAMP),
+    ('p003', 'u005', 1700.33, CURRENT_TIMESTAMP);
 
 SELECT
     purchases.total_price,
@@ -169,7 +173,8 @@ SELECT
     users.id AS user_id,
     users.name AS Usuario,
     users.email AS Email,
-    purchases.total_price AS Valor_Total
+    purchases.total_price AS Valor_Total,
+    purchases.created_at AS DATA_DE_CRIACAO
 FROM
     purchases
     INNER JOIN users ON users.id = purchases.buyer;
