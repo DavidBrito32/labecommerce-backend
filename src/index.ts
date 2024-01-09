@@ -220,6 +220,7 @@ app.put("/users/:id", (req: Request, res: Response) => {
 
 //************************************************************** */
 //PRODUCTS ENDPOINTS
+
 app.get("/products", (req: Request, res: Response) => {
   //VER TODOS OS PRODUTOS
   try {

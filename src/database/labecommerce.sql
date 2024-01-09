@@ -1,5 +1,4 @@
 -- Active: 1703025779984@@127.0.0.1@3306
-
 CREATE TABLE
     IF NOT EXISTS users (
         id TEXT UNIQUE NOT NULL PRIMARY KEY,
@@ -86,7 +85,12 @@ VALUES
         CURRENT_TIMESTAMP
     );
 
-    select * from users WHERE id = 'u003';
+select
+    *
+from
+    users
+WHERE
+    id = 'u003';
 
 -- INSERT NA TABELA USERS;
 INSERT INTO
@@ -103,12 +107,14 @@ VALUES
 -- Create Product
 DELETE FROM users
 WHERE
-    id = 'u002'; -- Delete user
+    id = 'u002';
 
+-- Delete user
 DELETE FROM products
 WHERE
-    id = 'p002'; -- Delete product
+    id = 'p002';
 
+-- Delete product
 UPDATE products
 SET
     name = 'Mudei de nome',
@@ -116,6 +122,54 @@ SET
     description = 'O melhor da categoria mudada',
     image_url = 'https://www.kabum.com.br/busca/mouse-redragon'
 WHERE
-    id = 'p001'; -- Edit Product
+    id = 'p001';
 
-    select * from products;
+-- Edit Product
+select
+    *
+from
+    users;
+
+select
+    *
+from
+    purchases;
+
+PRAGMA table_info (purchases);
+
+CREATE TABLE
+    IF NOT EXISTS purchases (
+        id TEXT NOT NULL UNIQUE PRIMARY KEY,
+        buyer TEXT NOT NULL,
+        total_price REAL NOT NULL,
+        created_at DATE NOT NULL DEFAULT TIMESTAMP,
+        FOREIGN KEY (buyer) REFERENCES users (id)
+    );
+
+INSERT INTO
+    purchases (id, buyer, total_price)
+VALUES
+    ('p005', 'u004', 658);
+
+SELECT
+    purchases.total_price,
+    users.name
+FROM
+    purchases
+    INNER JOIN users ON purchases.buyer = users.id;
+
+UPDATE purchases
+SET
+    total_price = 5600.80
+WHERE
+    id = 'p002';
+
+SELECT
+    purchases.id AS Pedido,
+    users.id AS user_id,
+    users.name AS Usuario,
+    users.email AS Email,
+    purchases.total_price AS Valor_Total
+FROM
+    purchases
+    INNER JOIN users ON users.id = purchases.buyer;
