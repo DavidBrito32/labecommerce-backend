@@ -146,7 +146,7 @@ CREATE TABLE
         FOREIGN KEY (buyer) REFERENCES users (id)
     );
 
-DROP TABLE purchases;
+SELECT * FROM purchases;
 
 INSERT INTO
     purchases (id, buyer, total_price, created_at)
@@ -162,11 +162,11 @@ FROM
     purchases
     INNER JOIN users ON purchases.buyer = users.id;
 
-UPDATE purchases
+UPDATE users
 SET
-    total_price = 5600.80
+    id = 'u010'
 WHERE
-    id = 'p002';
+    id = 'u003';
 
 SELECT
     purchases.id AS Pedido,
@@ -178,3 +178,29 @@ SELECT
 FROM
     purchases
     INNER JOIN users ON users.id = purchases.buyer;
+
+CREATE TABLE IF NOT EXISTS purchases_products(
+    purchases_id TEXT NOT NULL,
+    product_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    FOREIGN KEY (purchases_id) REFERENCES purchases(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+DROP TABLE "purchases_products";
+
+INSERT INTO purchases_products("purchases_id", "product_id", "quantity")
+VALUES
+('p003', 'p003', '20');
+
+SELECT * FROM purchases_products
+INNER JOIN products
+ON products.id = purchases_products."product_id"
+INNER JOIN purchases
+ON purchases.id = purchases_products."purchases_id"
+INNER JOIN users
+ON users.id = purchases.buyer;
+
+SELECT * FROM users;
