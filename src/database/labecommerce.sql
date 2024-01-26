@@ -5,26 +5,10 @@ CREATE TABLE
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
-        created_at TEXT NOT NULL
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
-INSERT INTO
-    users (id, name, email, password, created_at)
-VALUES
-    (
-        'u007',
-        'Maicon',
-        'maicon@email.com',
-        '15487Ad*',
-        CURRENT_TIMESTAMP
-    );
-
-SELECT
-    *
-FROM
-    users;
-
-PRAGMA table_info (users);
+drop TABLE users;
 
 -- CRIANDO A TABELA DE PRODUTOS
 CREATE TABLE
@@ -36,171 +20,83 @@ CREATE TABLE
         image_url TEXT NOT NULL
     );
 
-SELECT
-    *
-FROM
-    products;
-
-INSERT INTO
-    products (id, name, price, description, image_url)
-VALUES
-    (
-        'p008',
-        'Gamer hub engine',
-        25332.45,
-        'Melhor Engine Do momento',
-        'https://www.kabum.com.br/busca/gamer-hub'
-    );
-
--- Exercicio 1
-SELECT
-    *
-FROM
-    users;
-
--- GET ALL USERS
--- Exercicio 2
-SELECT
-    *
-FROM
-    products;
-
--- GET ALL PRODUCTS
-SELECT
-    *
-FROM
-    products
-WHERE
-    name LIKE '%gamer%';
-
--- Exercicio 3
-INSERT INTO
-    users (id, name, email, password, created_at)
-VALUES
-    (
-        'u009',
-        'Leonardo',
-        'leonardo@email.com',
-        'leonardo1234',
-        CURRENT_TIMESTAMP
-    );
-
-select
-    *
-from
-    users
-WHERE
-    id = 'u003';
-
--- INSERT NA TABELA USERS;
-INSERT INTO
-    products (id, name, price, description, image_url)
-VALUES
-    (
-        'p011',
-        'Produto',
-        20,
-        'Um produto',
-        'https://www.kabum.com.br/?product=produto'
-    );
-
--- Create Product
-DELETE FROM users
-WHERE
-    id = 'u002';
-
--- Delete user
-DELETE FROM products
-WHERE
-    id = 'p002';
-
--- Delete product
-UPDATE products
-SET
-    name = 'Mudei de nome',
-    price = 455.58,
-    description = 'O melhor da categoria mudada',
-    image_url = 'https://www.kabum.com.br/busca/mouse-redragon'
-WHERE
-    id = 'p001';
-
--- Edit Product
-select
-    *
-from
-    users;
-
-select
-    *
-from
-    purchases;
-
-PRAGMA table_info (purchases);
-
+-- TABELA PURCHASES
 CREATE TABLE
     IF NOT EXISTS purchases (
         id TEXT NOT NULL UNIQUE PRIMARY KEY,
         buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
-        created_at TEXT NOT NULL,
-        FOREIGN KEY (buyer) REFERENCES users (id)
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (buyer) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE
     );
 
-SELECT * FROM purchases;
+DROP TABLE purchases;
 
-INSERT INTO
-    purchases (id, buyer, total_price, created_at)
-VALUES
-    ('p001', 'u004', 800.33, CURRENT_TIMESTAMP),
-    ('p002', 'u005', 200.33, CURRENT_TIMESTAMP),
-    ('p003', 'u005', 1700.33, CURRENT_TIMESTAMP);
+PRAGMA table_info (purchases);
 
-SELECT
-    purchases.total_price,
-    users.name
-FROM
-    purchases
-    INNER JOIN users ON purchases.buyer = users.id;
-
-UPDATE users
-SET
-    id = 'u010'
-WHERE
-    id = 'u003';
-
-SELECT
-    purchases.id AS Pedido,
-    users.id AS user_id,
-    users.name AS Usuario,
-    users.email AS Email,
-    purchases.total_price AS Valor_Total,
-    purchases.created_at AS DATA_DE_CRIACAO
-FROM
-    purchases
-    INNER JOIN users ON users.id = purchases.buyer;
-
-CREATE TABLE IF NOT EXISTS purchases_products(
-    purchases_id TEXT NOT NULL,
-    product_id TEXT NOT NULL,
-    quantity INTEGER NOT NULL,
-    FOREIGN KEY (purchases_id) REFERENCES purchases(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
+CREATE TABLE
+    IF NOT EXISTS purchases_products (
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL,
+        FOREIGN KEY (purchase_id) REFERENCES purchases (id) ON UPDATE CASCADE ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products (id) ON UPDATE CASCADE ON DELETE CASCADE
+    );
 
 DROP TABLE "purchases_products";
 
-INSERT INTO purchases_products("purchases_id", "product_id", "quantity")
+INSERT INTO
+    purchases_products ("purchases_id", "product_id", "quantity")
 VALUES
-('p003', 'p003', '20');
+    ('p003', 'p003', '20');
 
-SELECT * FROM purchases_products
-INNER JOIN products
-ON products.id = purchases_products."product_id"
-INNER JOIN purchases
-ON purchases.id = purchases_products."purchases_id"
-INNER JOIN users
-ON users.id = purchases.buyer;
+SELECT
+    *
+FROM
+    purchases_products
+    INNER JOIN products ON products.id = purchases_products."product_id"
+    INNER JOIN purchases ON purchases.id = purchases_products."purchases_id"
+    INNER JOIN users ON users.id = purchases.buyer;
 
-SELECT * FROM users;
+SELECT
+    *
+FROM
+    users;
+
+PRAGMA table_info (users);
+
+PRAGMA table_info (products);
+
+PRAGMA table_info (purchases);
+
+PRAGMA table_info (purchases_products);
+
+SELECT
+    *
+FROM
+    users;
+
+SELECT
+    *
+FROM
+    products;
+
+SELECT
+    *
+FROM
+    purchases;
+
+SELECT
+    *
+FROM
+    purchases_products;
+
+insert into
+    purchases (id, buyer, total_price)
+VALUES
+    ('p003', 'u001', 850);
+
+INSERT INTO
+    purchases_products (purchases_id, product_id, quantity)
+VALUES
+    ('p001', 'p010', 2);

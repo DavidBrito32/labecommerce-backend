@@ -10,13 +10,13 @@ O LabEcommerce (**_Back End_**) é uma plataforma de comércio eletrônico onde 
 
 ## Documentação:
 - **Postman**
-- **_https://documenter.getpostman.com/view/29849540/2s9YkjAibP#f03b7a3b-ff9d-49bb-aa52-4ac1e1ce7738_**
+- **_https://documenter.getpostman.com/view/29849540/2s9YkjAibP_**
 
 ## Endpoints
 
-## Usuários
+# Usuários
 
-#### Listar Todos os Usuários
+# Listar Todos os Usuários
 
 - **Endpoint:** 
 - **Método:** **_GET_**
@@ -53,9 +53,9 @@ O LabEcommerce (**_Back End_**) é uma plataforma de comércio eletrônico onde 
 - **Descrição:** Remove o usuário correspondente ao ID fornecido.
 
 
-## Produtos
+# Produtos
 
-#### Listar Todos os Produtos
+# Listar Todos os Produtos
 
 - **Endpoint:** 
 - **Método:** **_GET_**
@@ -90,6 +90,47 @@ O LabEcommerce (**_Back End_**) é uma plataforma de comércio eletrônico onde 
 /products/:id
 ```
 - **Descrição:** Remove o produto correspondente ao ID fornecido.
+
+
+# Purchases
+
+# Listar todas as compras
+
+- **Endpoint:**
+- **Método:** **_GET_**
+```
+/purchases
+```
+
+- **Descrição:** Retorna uma lista com todas as compras.
+
+# Buscar uma compra pelo ID
+- **Endpoint:**
+- **Método:** **_GET_**
+```
+/purchases/:id
+```
+
+- **Descrição:** Retorna uma compra especifica.
+
+# Criar uma compra
+- **Endpoint:**
+- **Método:** **_POST_**
+```
+/purchases
+```
+
+- **Descrição:** Criar uma nova compra.
+
+# Deletar uma compra
+- **Endpoint:**
+- **Método:** **_DELETE_**
+```
+/purchases/:id
+```
+
+- **Descrição:** deleta uma compra.
+
 
 ## Configuração
 
@@ -134,6 +175,7 @@ Certifique-se de ter um ambiente Node.js configurado para que voce consiga rodar
 
 - [Node.JS](https://nodejs.org)
 - [SQLite](https://www.sqlite.org/index.html)
+- [Knex](https://knexjs.org/)
 - [Typescript](https://typescriptlang.org)
 - [Express.js](https://expressjs.com/pt-br/)
 
